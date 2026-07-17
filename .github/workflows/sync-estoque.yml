@@ -1,0 +1,38 @@
+name: Sincronizar Estoque (TPL -> Omie -> Vnda)
+
+on:
+  schedule:
+    # UTC-3 = São Paulo. 09h, 15h, 21h UTC = 06h, 12h, 18h SP
+    - cron: '0 9 * * *'
+    - cron: '0 15 * * *'
+    - cron: '0 21 * * *'
+  workflow_dispatch: {}   # botão manual
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Rodar sincronizacao
+        env:
+          # --- TPL (WMS) ---
+          TPL_BASE_URL: ${{ secrets.TPL_BASE_URL }}
+          TPL_APIKEY:   ${{ secrets.TPL_APIKEY }}
+          TPL_TOKEN:    ${{ secrets.TPL_TOKEN }}
+          TPL_EMAIL:    ${{ secrets.TPL_EMAIL }}
+          # --- Omie (ERP - Filial 002) ---
+          OMIE_PRODUTO_URL: ${{ secrets.OMIE_PRODUTO_URL }}
+          OMIE_ESTOQUE_URL: ${{ secrets.OMIE_ESTOQUE_URL }}
+          APP_KEY_OMIE:     ${{ secrets.APP_KEY_OMIE }}
+          APP_SECRET:       ${{ secrets.APP_SECRET }}
+        run: python main.py
