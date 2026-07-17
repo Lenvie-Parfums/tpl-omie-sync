@@ -23,7 +23,7 @@ def data_hoje_sp():
     return datetime.now(TZ_SP).strftime("%d/%m/%Y")
 
 # Codigos dos locais de estoque (obtidos via ListarLocaisEstoque em 07/07/2026)
-COD_LOCAL_PADRAO   = 8385256868
+COD_LOCAL_PADRAO   = 8985377339
 COD_LOCAL_AVARIAS  = 8980234760  # 0002_AVARIA (codigo: 99CTRL000201)
 
 _cache_locais = {
