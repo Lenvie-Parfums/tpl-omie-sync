@@ -61,9 +61,9 @@ def autenticar_tpl():
             )
             data = response.json()
 
-            if response.status_code == 200 and "auth" in data:
+          if response.status_code == 200 and ("token" in data or "auth" in data):
                 log.info("TPL: autenticado com sucesso.")
-                return data["auth"]
+                return data.get("token", data.get("auth"))
 
             code = data.get("code", response.status_code)
 
