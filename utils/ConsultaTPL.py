@@ -138,16 +138,12 @@ def rodarAPITPL():
                     if item.get("code") != 200:
                         log.warning(f"TPL: SKU {item.get('sku')} retornou code={item.get('code')}. Pulando.")
                         continue
-                    # Saldo = balance do período + resume (saldo anterior)
-                    balance   = int(item.get("balance", 0) or 0)
-                    resume    = item.get("resume", {})
-                    saldo_ant = int(resume.get("balance", 0) or 0) if resume else 0
-                    saldo_total = balance + saldo_ant
-
+                    # Campo correto conforme retorno real da API: "amount"
+                    saldo = int(item.get("amount", 0) or 0)
                     resultados.append({
                         "sku":       item["sku"],
-                        "available": saldo_total,
-                        "blocked":   0,  # TPL não separa por local; avarias tratadas separadamente
+                        "available": saldo,
+                        "blocked":   0,
                     })
 
                 log.info(f"TPL: {len(resultados)} SKUs recebidos com sucesso.")
