@@ -61,9 +61,10 @@ def autenticar_tpl():
             )
             data = response.json()
 
-            if response.status_code == 200 and "auth" in data:
-                log.info("TPL: autenticado com sucesso.")
-                return data["auth"]
+            if response.status_code == 200 and ("token" in data or "auth" in data):
+                auth_value = data.get("token") or data.get("auth")
+                log.info(f"TPL: autenticado com sucesso. id={data.get('id')}")
+                return auth_value
 
             code = data.get("code", response.status_code)
 
@@ -102,10 +103,10 @@ def rodarAPITPL():
 
     url = f"{TPL_BASE_URL}/get/stock"
     payload = {
-        "auth":   auth,
+        "token":  auth,   # campo confirmado no retorno do get/auth
         "start":  hoje,
-        "resume": 1,      # inclui saldo acumulado anterior ao período
-        "sku": [{"sku": "*"}]  # todos os SKUs ativos
+        "resume": 1,
+        "sku": [{"sku": "*"}]
     }
 
     for tentativa in range(1, MAX_RETRIES + 1):
