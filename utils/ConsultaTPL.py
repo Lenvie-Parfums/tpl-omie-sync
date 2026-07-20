@@ -103,7 +103,7 @@ def rodarAPITPL():
 
     url = f"{TPL_BASE_URL}/get/stock"
     payload = {
-        "token":  auth,   # campo confirmado no retorno do get/auth
+        "auth":   auth,   # campo exigido pelo get/stock conforme doc
         "start":  hoje,
         "resume": 1,
         "sku": [{"sku": "*"}]
