@@ -117,6 +117,14 @@ def rodarAPITPL():
                 data=json.dumps(payload),
                 timeout=60
             )
+            log.info(f"TPL get/stock status HTTP: {response.status_code}")
+            log.info(f"TPL get/stock retorno bruto: '{response.text[:300]}'")
+
+            if not response.text or not response.text.strip():
+                log.warning(f"TPL: get/stock retornou resposta vazia (tentativa {tentativa})")
+                time.sleep(RETRY_DELAY)
+                continue
+
             data = response.json()
             code = data.get("code", response.status_code)
 
