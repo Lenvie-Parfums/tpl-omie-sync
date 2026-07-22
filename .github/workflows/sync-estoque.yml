@@ -2,11 +2,10 @@ name: Sincronizar Estoque (TPL -> Omie -> Vnda)
 
 on:
   schedule:
-    # UTC-3 = São Paulo. 09h, 15h, 21h UTC = 06h, 12h, 18h SP
     - cron: '0 9 * * *'
     - cron: '0 15 * * *'
-    - cron: '0 21' * * *'
-  workflow_dispatch: {}   # botão manual
+    - cron: '0 21 * * *'
+  workflow_dispatch: {}
 
 jobs:
   sync:
