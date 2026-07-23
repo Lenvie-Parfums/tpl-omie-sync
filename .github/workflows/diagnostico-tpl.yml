@@ -1,0 +1,21 @@
+name: Diagnostico TPL (retorno bruto)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests python-dotenv
+      - name: Consultar TPL
+        env:
+          TPL_BASE_URL: ${{ secrets.TPL_BASE_URL }}
+          TPL_APIKEY:   ${{ secrets.TPL_APIKEY }}
+          TPL_TOKEN:    ${{ secrets.TPL_TOKEN }}
+          TPL_EMAIL:    ${{ secrets.TPL_EMAIL }}
+        run: python diagnostico_tpl.py
