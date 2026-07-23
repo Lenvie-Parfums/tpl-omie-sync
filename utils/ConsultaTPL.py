@@ -138,12 +138,14 @@ def rodarAPITPL():
                     if item.get("code") != 200:
                         log.warning(f"TPL: SKU {item.get('sku')} retornou code={item.get('code')}. Pulando.")
                         continue
-                    # Campo correto conforme retorno real da API: "amount"
-                    saldo = int(item.get("amount", 0) or 0)
+                    # amount = disponível físico → PADRAO
+                    # committed = reservado para pedidos → AVARIAS
+                    saldo     = int(item.get("amount", 0) or 0)
+                    committed = int(item.get("committed", 0) or 0)
                     resultados.append({
                         "sku":       item["sku"],
                         "available": saldo,
-                        "blocked":   0,
+                        "blocked":   committed,
                     })
 
                 log.info(f"TPL: {len(resultados)} SKUs recebidos com sucesso.")
